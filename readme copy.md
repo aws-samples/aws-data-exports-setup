@@ -42,11 +42,3 @@ ENTER
 ## Links
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/bcm-data-exports.html
 https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cur.html
-## Security
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
-

@@ -1,0 +1,42 @@
+name: cfn-github-actions
+on:
+  pull_request:
+    branches:
+    - main
+  workflow_dispatch:
+      inputs:
+        name:
+          description: "test"
+          default: "test"
+jobs:
+  check-cfn:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+      - name: Install CFN tools
+        run: |
+          gem install cfn-nag
+      - name: CFN Nag scan
+        run: |
+          cfn_nag_scan --input-path  dataexports-athena-cfn-2.yml
+      - name: Install cfn-lint
+        run: |
+          pip install cfn-lint
+      - name: CFN Lint
+        run: |
+          cfn-lint dataexports-athena-cfn-2.yml
+      - name: Install bandit
+        run: |
+          pip install bandit
+      - name: bandit check
+        run: |
+          bandit -r ConvertUR.py  --confidence-level high

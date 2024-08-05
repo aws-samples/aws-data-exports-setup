@@ -5,7 +5,7 @@ line_item_operation,
 pricing_unit,
 product['description'],
 product['usage_family'],
-product['pricingplan'],
+product['pricingplan']
 FROM
 ${tableName}
 WHERE
@@ -17,7 +17,7 @@ line_item_operation,
 pricing_unit,
 product['description'],
 product['usage_family'],
-product['pricingplan'],
+product['pricingplan']
 ORDER BY
 product['product_name'],
 product_product_family,
@@ -25,4 +25,4 @@ line_item_operation,
 pricing_unit,
 product['description'],
 product['usage_family'],
-product['pricingplan'],
+product['pricingplan']

@@ -15,20 +15,28 @@ def change_sql():
     reading_file = open("test.txt", "r")
 
     new_file_content = ""
-
+    colname = True
     for line in reading_file:
         new_line = line.strip()
+
         new_line = new_line.replace(';', '')
         #import pdb; pdb.set_trace()
         noncom_new_line = new_line.replace(',','') 
+
+        if new_line.lower() == 'from': colname = False
+
         if noncom_new_line not in product_columns_keep:
             if new_line.startswith('product'):
                 new_line = new_line[8:]
                 if ',' in new_line:
                     new_line = new_line.replace(',','')  
 
-                    new_line = f"product['{new_line}'],"
-                else : new_line = f"product['{new_line}']"
+                    if colname == False: new_line = f"product['{new_line}'], "
+                    else: new_line = f"product['{new_line}'] as {noncom_new_line},"
+                else : 
+                    if colname == False: new_line = f"product['{new_line}']"
+                    else: new_line = f"product['{new_line}'] as {noncom_new_line}"
+                    
             
             new_file_content += new_line +"\n"
         else:

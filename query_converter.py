@@ -9,7 +9,7 @@ special_columns_keep = product_columns_keep + discount_columns_keep
 
 unchanged_prefix = ("line_item", "identity", "bill", "reservation", "savings_plan", "reservation", "pricing", "split_line_item")
     
-
+#Will not work with nested queries
 
 def change_sql():
     reading_file = open("test.txt", "r")
@@ -24,20 +24,40 @@ def change_sql():
         noncom_new_line = new_line.replace(',','') 
 
         if new_line.lower() == 'from': colname = False
-
-        if noncom_new_line not in product_columns_keep:
+        #check if in cols that stay the same
+        if noncom_new_line not in special_columns_keep: #product_columns_keep: 
+            #if its not in there check if product fmt
             if new_line.startswith('product'):
-                new_line = new_line[8:]
+                #remove the product_ as now in []
+                new_line = new_line[8:] 
                 if ',' in new_line:
+                    #remove comma and will put at end later
                     new_line = new_line.replace(',','')  
 
-                    if colname == False: new_line = f"product['{new_line}'], "
+                    #check if in cols and if not assume group by. 
+                    if colname == False: new_line = f"product['{new_line}'], " 
                     else: new_line = f"product['{new_line}'] as {noncom_new_line},"
                 else : 
                     if colname == False: new_line = f"product['{new_line}']"
                     else: new_line = f"product['{new_line}'] as {noncom_new_line}"
-                    
-            
+
+
+
+
+            elif new_line.startswith('discount'):
+                #remove the product_ as now in []
+                new_line = new_line[9:] 
+                if ',' in new_line:
+                    #remove comma and will put at end later
+                    new_line = new_line.replace(',','')  
+
+                    #check if in cols and if not assume group by. 
+                    if colname == False: new_line = f"discount['{new_line}'], " 
+                    else: new_line = f"discount['{new_line}'] as {noncom_new_line},"
+                else : 
+                    if colname == False: new_line = f"discount['{new_line}']"
+                    else: new_line = f"discount['{new_line}'] as {noncom_new_line}"
+
             new_file_content += new_line +"\n"
         else:
             new_file_content += new_line +"\n"
@@ -47,4 +67,4 @@ def change_sql():
     writing_file.write(new_file_content)
     writing_file.close()
 
-change_sql()#
+change_sql()

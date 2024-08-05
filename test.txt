@@ -1,10 +1,12 @@
 SELECT
-    product_product_name,
+product_product_name,
     product_product_family,
     line_item_operation,
     pricing_unit,
     product_description,
     product_usage_family, 
+    discount_total_discount,
+    discount_stuff,
     product_pricingplan
 FROM
     ${tableName}
@@ -17,6 +19,8 @@ GROUP BY
     pricing_unit,
     product_description,
     product_usage_family, 
+    discount_total_discount,
+    discount_stuff,
     product_pricingplan
 ORDER BY
     product_product_name,
@@ -24,5 +28,6 @@ ORDER BY
     line_item_operation,
     pricing_unit,
     product_description,
+    discount_total_discount,
     product_usage_family, 
     product_pricingplan;

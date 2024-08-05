@@ -5,6 +5,8 @@ line_item_operation,
 pricing_unit,
 product['description'] as product_description,
 product['usage_family'] as product_usage_family,
+discount_total_discount,
+discount['stuff'] as discount_stuff,
 product['pricingplan'] as product_pricingplan
 FROM
 ${tableName}
@@ -17,6 +19,8 @@ line_item_operation,
 pricing_unit,
 product['description'], 
 product['usage_family'], 
+discount_total_discount,
+discount['stuff'], 
 product['pricingplan']
 ORDER BY
 product['product_name'], 
@@ -24,5 +28,6 @@ product_product_family,
 line_item_operation,
 pricing_unit,
 product['description'], 
+discount_total_discount,
 product['usage_family'], 
 product['pricingplan']

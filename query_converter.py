@@ -41,9 +41,7 @@ def change_sql():
                     if colname == False: new_line = f"product['{new_line}']"
                     else: new_line = f"product['{new_line}'] as {noncom_new_line}"
 
-
-
-
+            #do the same for discount
             elif new_line.startswith('discount'):
                 #remove the product_ as now in []
                 new_line = new_line[9:] 

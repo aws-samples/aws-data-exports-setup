@@ -24,6 +24,10 @@ ENTER
 5. Creates new CUR
 
 
+## Lecacy Query Converter
+Will not work with nested queries 
+save query in test.text           
+```python query_converter.py     ```
 
 
 ## Why

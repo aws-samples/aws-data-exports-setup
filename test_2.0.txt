@@ -1,33 +1,27 @@
 SELECT
-product['product_name'] as product_product_name,
-product_product_family,
-line_item_operation,
-pricing_unit,
-product['description'] as product_description,
-product['usage_family'] as product_usage_family,
-discount_total_discount,
-discount['stuff'] as discount_stuff,
-product['pricingplan'] as product_pricingplan
+bill_payer_account_id,
+line_item_usage_account_id,
+DATE_FORMAT((line_item_usage_start_date),'%Y-%m-%d') AS day_line_item_usage_start_date,
+line_item_usage_type,
+line_item_resource_id,
+product['region'] as product_region,
+line_item_product_code,
+SUM(CAST(line_item_usage_amount AS DOUBLE)) AS sum_line_item_usage_amount,
+SUM(CAST(line_item_unblended_cost AS DECIMAL(16,8))) AS sum_line_item_unblended_cost
 FROM
-${tableName}
+${table_name}
 WHERE
-line_item_line_item_type = 'Usage'
+${date_filter}
+AND line_item_product_code = 'AmazonAthena'
+AND line_item_line_item_type  IN ('DiscountedUsage', 'Usage', 'SavingsPlanCoveredUsage')
 GROUP BY
-product['product_name'], 
-product_product_family,
-line_item_operation,
-pricing_unit,
-product['description'], 
-product['usage_family'], 
-discount_total_discount,
-discount['stuff'], 
-product['pricingplan']
+bill_payer_account_id,
+line_item_usage_account_id,
+line_item_usage_start_date,
+line_item_usage_type,
+line_item_resource_id,
+product['region'], 
+line_item_product_code
 ORDER BY
-product['product_name'], 
-product_product_family,
-line_item_operation,
-pricing_unit,
-product['description'], 
-discount_total_discount,
-product['usage_family'], 
-product['pricingplan']
+sum_line_item_unblended_cost DESC
+LIMIT 20

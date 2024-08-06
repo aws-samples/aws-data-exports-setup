@@ -5,7 +5,9 @@ SELECT
     pricing_unit,
     product_description,
     product_usage_family, 
-    product_pricingplan
+    product_pricingplan,
+    month,
+    year
 FROM
     ${tableName}
 WHERE
@@ -17,7 +19,9 @@ GROUP BY
     pricing_unit,
     product_description,
     product_usage_family, 
-    product_pricingplan
+    product_pricingplan,
+    month,
+    year
 ORDER BY
     product_product_name,
     product_product_family,

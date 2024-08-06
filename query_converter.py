@@ -33,7 +33,6 @@ def change_sql():
         noncom_new_line = noncom_new_line.strip()
         
         if 'from' in new_line.lower(): colname = False
-        if 'select' in new_line.lower(): colname = True
         
         #check if in cols that stay the same
         if noncom_new_line not in special_columns_keep: #product_columns_keep: 

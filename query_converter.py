@@ -26,13 +26,14 @@ def change_sql():
     new_file_content = ""
     colname = True
     for line in reading_file:
-        new_line = line.strip()
-
-        new_line = new_line.replace(';', '')
+        new_line = line.replace(';', '')
+        new_line = new_line.strip()
         #import pdb; pdb.set_trace()
         noncom_new_line = new_line.replace(',','') 
-
-        if new_line.lower() == 'from': colname = False
+        noncom_new_line = noncom_new_line.strip()
+        
+        if 'from' in new_line.lower(): colname = False
+        
         #check if in cols that stay the same
         if noncom_new_line not in special_columns_keep: #product_columns_keep: 
             #if its not in there check if product fmt
@@ -70,7 +71,7 @@ def change_sql():
             new_file_content += new_line +"\n"
     reading_file.close()
 
-    writing_file = open("test_2.0.txt", "w")
+    writing_file = open(f"query_2.0.txt", "w")
     writing_file.write(new_file_content)
     writing_file.close()
 

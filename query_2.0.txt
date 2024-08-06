@@ -5,7 +5,9 @@ line_item_operation,
 pricing_unit,
 product['description'] as product_description,
 product['usage_family'] as product_usage_family,
-product['pricingplan'] as product_pricingplan
+product['pricingplan'] as product_pricingplan,
+SPLIT(billing_period,'-')[2] as month,
+SPLIT(billing_period,'-')[1] as year
 FROM
 ${tableName}
 WHERE
@@ -17,7 +19,9 @@ line_item_operation,
 pricing_unit,
 product['description'], 
 product['usage_family'], 
-product['pricingplan']
+product['pricingplan'], 
+SPLIT(billing_period,'-')[2], 
+SPLIT(billing_period,'-')[1]
 ORDER BY
 product['product_name'], 
 product_product_family,

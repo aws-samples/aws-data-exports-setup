@@ -35,7 +35,7 @@ def change_sql():
         if 'from' in new_line.lower(): colname = False
         
         #check if in cols that stay the same
-        if noncom_new_line not in special_columns_keep: #product_columns_keep: 
+        if noncom_new_line not in special_columns_keep: 
             #if its not in there check if product fmt
             if new_line.startswith('product'):
                 #remove the product_ as now in []
@@ -65,6 +65,29 @@ def change_sql():
                 else : 
                     if colname == False: new_line = f"discount['{new_line}']"
                     else: new_line = f"discount['{new_line}'] as {noncom_new_line}"
+            elif "month" in new_line.lower(): 
+                if ',' in new_line:
+                    #remove comma and will put at end later
+                    new_line = new_line.replace(',','')  
+
+                    #check if in cols and if not assume group by. 
+                    if colname == False: new_line = "SPLIT(billing_period,'-')[2], " 
+                    else: new_line = "SPLIT(billing_period,'-')[2] as month,"
+                else : 
+                    if colname == False: new_line =  "SPLIT(billing_period,'-')[2]" 
+                    else: new_line = "SPLIT(billing_period,'-')[2] as month"
+                  
+            elif "year" in new_line.lower(): 
+                if ',' in new_line:
+                    #remove comma and will put at end later
+                    new_line = new_line.replace(',','')  
+
+                    #check if in cols and if not assume group by. 
+                    if colname == False: new_line = "SPLIT(billing_period,'-')[1], " 
+                    else: new_line = "SPLIT(billing_period,'-')[1] as year,"
+                else : 
+                    if colname == False: new_line =  "SPLIT(billing_period,'-')[1]" 
+                    else: new_line = "SPLIT(billing_period,'-')[1] as year"
 
             new_file_content += new_line +"\n"
         else:

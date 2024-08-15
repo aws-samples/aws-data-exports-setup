@@ -1,8 +1,12 @@
 # Move to CUR 2.0
 
-Write in console:
-  ``` export LEGACY_CUR=<cur name from billing console>```
-    ```python ConvertUR.py ``
+
+# Convert CUR1 query to CUR1 with bedrock
+Open 
+
+```
+  pip3 install git+https://github.com/aws-samples/aws-data-exports-setup@python-module
+```
 
 pip install -r requirements.txt
 

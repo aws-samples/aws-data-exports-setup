@@ -9,7 +9,7 @@ import json
 
 import boto3
 import click
-import questionary
+from InquirerPy import inquirer
 
 from convertur.cur1to2 import mapping as cur1to2_mapping
 import convertur.utils as utils
@@ -17,26 +17,26 @@ import convertur.utils as utils
 mapping = "\n".join([f"{key} = {val}" for key, val in cur1to2_mapping.items()])
 
 prompt_template = """
-Human:
-Transform the following SQL query from Table1 format to Table2 format.
+    Human:
+    Transform the following SQL query from Table1 format to Table2 format.
 
-Tag fields are transformed like this:
-    resource_tags_user_application -> resource_tags['user_application']
+    Tag fields are transformed like this:
+        resource_tags_user_application -> resource_tags['user_application']
 
-For other fields use this mapping of Table1 to Table2 fields:
-{mapping}
+    For other fields use this mapping of Table1 to Table2 fields:
+    {mapping}
 
-If the field is not in the list, stop and explain.
+    If the field is not in the list, stop and explain.
 
-Original query:
-{query}
+    Original query:
+    {query}
 
-Make sure to replace year and month as per mapping.
+    Make sure to replace year and month as per mapping.
 
-Keep original formatting when possible.
+    Keep original formatting when possible.
 
-Response should contain only resulting Query for Table2. Explain the difference between the result and original query
-Assistant:
+    Response should contain only resulting Query for Table2. Explain the difference between the result and original query
+    Assistant:
 """
 
 
@@ -47,7 +47,10 @@ def main():
     answer = None
     while True:
         last_answer = answer
-        answer = questionary.text(multiline=True, message='Enter CUR1 SQL query or GitHub URL (r=retry, q=quit').ask()
+        answer = inquirer.text(
+            message="Enter CUR1 SQL query or GitHub URL (r=retry, q=quit):",
+            multiline=True,
+        ).execute()
 
         if answer is None or answer.strip() == 'q' or answer.strip() == 'quit':
             break

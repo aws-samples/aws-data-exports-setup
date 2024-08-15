@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name="convertur",
-    version="0.1.0",
+    version="0.1.1",
     packages=find_packages(),
     install_requires=[
         'boto3',
-        'questionary',
+        'InquirerPy',
         'requests',
         "click>=8.0.0",
     ],

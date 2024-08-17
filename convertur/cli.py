@@ -11,6 +11,8 @@ import json
 import boto3
 import click
 from prompt_toolkit import PromptSession
+from  pygments.lexers.sql import SqlLexer
+from prompt_toolkit.lexers import PygmentsLexer
 
 from convertur.cur1to2 import mapping as cur1to2_mapping
 from convertur import utils
@@ -61,8 +63,10 @@ def main():
     while True:
         last_answer = answer
         answer = prompt(
-            message="Enter CUR1 SQL query or GitHub URL (r=retry, q=quit):",
+            message="Enter CUR1 SQL query or GitHub URL (r=retry, q=quit)>\n",
             multiline=True,
+            lexer=PygmentsLexer(SqlLexer),
+            rprompt=lambda: 'Press Escape + Enter',
         )
 
         if answer is None or answer.strip() == 'q' or answer.strip() == 'quit':

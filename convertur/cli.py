@@ -30,6 +30,8 @@ For other fields use this mapping of Table1 to Table2 fields:
 
 If the field is not in the list, stop and explain.
 
+Keep ${{table_name}} and ${{date_filter}} as is unless said otherwise.  
+
 Original query:
 {query}
 

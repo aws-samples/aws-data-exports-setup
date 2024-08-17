@@ -11,6 +11,7 @@ setup(
         'requests',
         'questionary',
         'pandas',
+        'pyarrow', # for parquet
         "click>=8.0.0",
     ],
     author="Iakov Gan, Steph Gooch, Zach Erdman",

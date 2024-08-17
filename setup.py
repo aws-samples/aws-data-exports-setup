@@ -17,7 +17,7 @@ setup(
     entry_points={
         'console_scripts': [
             'migrate-cur1=convertur.migrate:main',
-            'query-convertor=convertur.cli:main',
+            'query-convertor=convertur.query_convertor:main',
         ],
     },
     author_email="iakov@amazon.com",

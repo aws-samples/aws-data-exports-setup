@@ -184,4 +184,6 @@ mapping = {
 #    '''concat('name', "bill_payer_account_id")''': 'bill_payer_account_name',
 #    '''concat('name', "line_item_usage_account_id")''': 'line_item_usage_account_name',
 #    '''concat("year", '-' , "month")''': "billing_period",
+    '''concat("year", '-', "month")''':  ''' "billing_period''',
+    '''CAST("concat"("year", '-', "month", '-01') AS date)''':  '''CAST("concat"("billing_period", '-01') AS date)''',
 }

@@ -12,36 +12,39 @@ import click
 from InquirerPy import inquirer
 
 from convertur.cur1to2 import mapping as cur1to2_mapping
-import convertur.utils as utils
+from convertur import utils
 
-mapping = "\n".join([f"{key} = {val}" for key, val in cur1to2_mapping.items()])
+MAPPING = "\n".join([f"{key} = {val}" for key, val in cur1to2_mapping.items()])
 
-prompt_template = """
-    Human:
-    Transform the following SQL query from Table1 format to Table2 format.
+PROMPT_TEMPLATE = """
+Human:
+Transform the following SQL query from Table1 format to Table2 format.
 
-    Tag fields are transformed like this:
-        resource_tags_user_application -> resource_tags['user_application']
+Tag fields are transformed like this:
+    resource_tags_XXX -> resource_tags['XXX']
+here the example is for (XXX) but it can be any other string.
 
-    For other fields use this mapping of Table1 to Table2 fields:
-    {mapping}
+For other fields use this mapping of Table1 to Table2 fields:
+{mapping}
 
-    If the field is not in the list, stop and explain.
+If the field is not in the list, stop and explain.
 
-    Original query:
-    {query}
+Original query:
+{query}
 
-    Make sure to replace year and month as per mapping.
+Make sure to replace year and month as per mapping.
 
-    Keep original formatting when possible.
+Keep original formatting when possible.
 
-    Response should contain only resulting Query for Table2. Explain the difference between the result and original query
-    Assistant:
+Response should contain only resulting Query for Table2. Explain the difference between the result and original query
+Assistant:
 """
 
 
 @click.command()
 def main():
+    """ get user input and run prompt
+    """
     bedrock = boto3.client('bedrock-runtime')
 
     answer = None
@@ -54,7 +57,7 @@ def main():
 
         if answer is None or answer.strip() == 'q' or answer.strip() == 'quit':
             break
-        elif answer.strip() == 'r' or answer.strip() == 'retry':
+        if answer.strip() == 'r' or answer.strip() == 'retry':
             answer = last_answer
 
         if answer.strip().startswith('https://'):
@@ -76,7 +79,7 @@ def main():
                         "content": [
                             {
                                 "type": "text",
-                                "text": prompt_template.format(mapping=mapping, query=query)
+                                "text": PROMPT_TEMPLATE.format(mapping=MAPPING, query=query)
                             }
                         ]
                     }

@@ -1,3 +1,5 @@
+''' Explicit Mapping CUR1->CUR2
+'''
 
 mapping = {
     'year': """split_part("billing_period", '-', 1)""",

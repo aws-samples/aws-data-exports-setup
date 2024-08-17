@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'boto3',
-        'InquirerPy',
+        'prompt_toolkit',
         'requests',
         "click>=8.0.0",
     ],

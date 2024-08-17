@@ -2,19 +2,22 @@ from setuptools import setup, find_packages
 
 setup(
     name="convertur",
-    version="0.1.2",
+    version="0.1.3",
     packages=find_packages(),
     install_requires=[
         'boto3',
         'prompt_toolkit',
         'pygments',
         'requests',
+        'questionary',
+        'pandas',
         "click>=8.0.0",
     ],
-    author="Iakov Gan",
+    author="Iakov Gan, Steph Gooch, Zach Erdman",
     entry_points={
         'console_scripts': [
-            'convertur=convertur.cli:main',
+            'migrate-cur1=convertur.migrate:main',
+            'query-convertor=convertur.cli:main',
         ],
     },
     author_email="iakov@amazon.com",

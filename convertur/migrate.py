@@ -1,9 +1,12 @@
 '''
-Write in console:
+This script analyses your Legacy CUR and creates CUR 2.0 to simulate Legacy CUR
 
-    python ConvertUR.py file_name.parquet
+    Step 1/5: choosing legacy CUR report
+    Step 2/5: Pulling the latest parquet file
+    Step 3/5: Generating SQL
+    Step 4/5: Updating bucket policy
+    Step 5/5: Creating CUR 2.0
 
-to read your CUR parquet file and output a .txt file with a CUR2 query for Data Exports
 '''
 
 import re
@@ -15,8 +18,7 @@ import questionary
 import pandas as pd
 
 
-account_id = boto3.client("sts").get_caller_identity()["Account"]
-
+ACCOUNT_ID = boto3.client("sts").get_caller_identity()["Account"]
 
 def choose_report():
     cur = boto3.client("cur", region_name='us-east-1')
@@ -29,7 +31,6 @@ def choose_report():
         report_name = questionary.select(message='select', choices=choices).ask()
         report = next((r for r in reports if r['ReportName'] == report_name))
         choices.remove(report['ReportName'])
-
         if report['Format'] != 'Parquet':
             print (f"The report {report['ReportName']} is not Parquet. Cannot proceed. Please chose another one.")
             continue
@@ -39,7 +40,6 @@ def choose_report():
         if report['ReportVersioning'] != 'OVERWRITE_REPORT':
             print (f"The report {report['ReportName']} has no option 'OVERWRITE_REPORT'. Cannot proceed. Please chose another one.")
             continue
-
         return report
 
 
@@ -174,10 +174,10 @@ def update_bucket_policy(bucket):
             ],
             "Condition": {
                 "StringLike": {
-                    "aws:SourceAccount": account_id,
+                    "aws:SourceAccount": ACCOUNT_ID,
                     "aws:SourceArn": [
-                        f"arn:aws:cur:us-east-1:{account_id}:definition/*", # region and partition hardcoded
-                        f"arn:aws:bcm-data-exports:us-east-1:{account_id}:export/*"
+                        f"arn:aws:cur:us-east-1:{ACCOUNT_ID}:definition/*", # region and partition hardcoded
+                        f"arn:aws:bcm-data-exports:us-east-1:{ACCOUNT_ID}:export/*"
                     ]
                 }
             }

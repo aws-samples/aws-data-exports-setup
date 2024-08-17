@@ -22,7 +22,7 @@ This repository provides ready to use command line tool that takes as interactiv
 ### Run
 Run the interactive prompt, and insert your CUR1 queries
 ```
-convertur
+query-convertor
 ```
 
 The tool also can read GitHub public urls.
@@ -39,11 +39,17 @@ This tool detects currently deployed [legacy CUR](https://boto3.amazonaws.com/v1
 5. Creates new CUR
 
 ### Installation
-Coming soon
+1. Open CloudShell in `us-east-1` region.
+2. Run following command:
+```
+  pip3 install git+https://github.com/aws-samples/aws-data-exports-setup
+```
 
 ### Usage
-Coming soon
-
+Run migration script
+```
+migrate-cur1
+```
 
 ## Security
 

@@ -106,6 +106,9 @@ def main(syntax):
         else:
             query = answer
 
+        # fix some wired queries
+        query = query.replace('${table_name}.','')
+
         print('\n\n\n')
         print('Processing..')
         print('\n\n')

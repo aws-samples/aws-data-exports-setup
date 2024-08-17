@@ -21,6 +21,8 @@ from prompt_toolkit import print_formatted_text
 from convertur.cur1to2 import mapping as cur1to2_mapping
 from convertur import utils
 
+MODEL_ID = "anthropic.claude-3-sonnet-20240229-v1:0"
+
 MAPPING = "\n".join([f"{key} = {val}" for key, val in cur1to2_mapping.items()])
 
 PROMPT_TEMPLATE = """
@@ -114,26 +116,32 @@ def main(syntax):
         print('\n\n')
         print_formatted_text(HTML('<b>Bedrock assistant</b>:'))
         print('\n\n')
-        response = bedrock.invoke_model_with_response_stream(
-            modelId='anthropic.claude-3-sonnet-20240229-v1:0',
-            accept='application/json',
-            contentType='application/json',
-            body=json.dumps({
-                "anthropic_version": "bedrock-2023-05-31",
-                "max_tokens": 10000,
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "text",
-                                "text": PROMPT_TEMPLATE.format(mapping=MAPPING, query=query)
-                            }
-                        ]
-                    }
-                ]
-            }),
-        )
+        try:
+            response = bedrock.invoke_model_with_response_stream(
+                modelId=MODEL_ID,
+                accept='application/json',
+                contentType='application/json',
+                body=json.dumps({
+                    "anthropic_version": "bedrock-2023-05-31",
+                    "max_tokens": 10000,
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": PROMPT_TEMPLATE.format(mapping=MAPPING, query=query)
+                                }
+                            ]
+                        }
+                    ]
+                }),
+            )
+        except Exception as exc:
+            if "You don't have access to the model with the specified model ID." in str(exc):
+                print(f"You don't have access to the model. Please open https://console.aws.amazon.com/bedrock and activate access to model {MODEL_ID}")
+                exit(1)
+            raise
 
         full_text = ''
         for event in response.get('body'):

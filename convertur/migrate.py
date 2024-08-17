@@ -66,7 +66,7 @@ def replace_legacy_columns(columns):
     including any aliasing (AS) needed to match the original CUR column names in the CUR 2.0 export output'''
 
     #the product columns from CUR that are kept in CUR 2.0
-    product_columns_keep=[
+    product_columns_keep = [
         "product",
         "product_sku",
         "product_comment",
@@ -88,11 +88,11 @@ def replace_legacy_columns(columns):
         "product_to_location",
         "product_to _location_type",
         "product_to_region_code",
-        "product_usagetype"
+        "product_usagetype",
     ]
 
     #the discount columns from CUR that are kept in CUR 2.0
-    discount_columns_keep=[
+    discount_columns_keep = [
         "discount_total_discount",
         "discount_bundled_discount",
     ]
@@ -258,7 +258,6 @@ def main():
     local_file_name = "parquet_file.snappy.parquet"
     get_parquet_file(bucket, location, local_file_name)
     cur1_columns = extract_col_list(local_file_name)
-    print(cur1_columns)
 
     print('\nStep 3/5: Generating SQL')
     cur2_columns = replace_legacy_columns(cur1_columns)
@@ -272,7 +271,7 @@ def main():
     print('\nStep 5/5: Creating CUR 2.0')
     create_cur2(sql_string, bucket, report_name=report['ReportName'])
 
-    print('Done. CUR will be populated in 24 hours.')
+    print('\nDone. CUR will be populated in 24 hours.')
 
 
 if __name__ == '__main__':

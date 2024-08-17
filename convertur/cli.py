@@ -10,9 +10,13 @@ import json
 
 import boto3
 import click
+import pygments
 from prompt_toolkit import PromptSession
-from  pygments.lexers.sql import SqlLexer
+from pygments.lexers.sql import SqlLexer
+from pygments.token import Token
 from prompt_toolkit.lexers import PygmentsLexer
+from prompt_toolkit.formatted_text import PygmentsTokens, HTML
+from prompt_toolkit import print_formatted_text
 
 from convertur.cur1to2 import mapping as cur1to2_mapping
 from convertur import utils
@@ -32,7 +36,9 @@ For other fields use this mapping of Table1 to Table2 fields:
 
 If the field is not in the list, stop and explain.
 
-Keep ${{table_name}} and ${{date_filter}} as is unless said otherwise.  
+do not replace line_item_usage_start_date and line_item_usage_end_date field 
+
+Keep ${{table_name}} and ${{date_filter}} as is unless said otherwise.
 
 Original query:
 {query}
@@ -41,7 +47,7 @@ Make sure to replace year and month as per mapping.
 
 Keep original formatting when possible.
 
-Response should contain only resulting Query for Table2. Explain the difference between the result and original query
+Response should contain only resulting Query for Table2. Explain the difference between the result and original query. Before explanation insert word: 'Explanation:'
 Assistant:
 """
 
@@ -52,9 +58,28 @@ def prompt(**kwargs):
        session.app.paste_mode = lambda: True # avoid auto-indent in CloudShell
     return session.prompt()
 
+def get_terminal_width():
+    try:
+        columns, _ = os.get_terminal_size()
+        return columns
+    except AttributeError:
+        # os.get_terminal_size() not available (probably running in IDE)
+        return 80  # default to 80 columns
+
+def _print(text):
+    try:
+        sql = text.split('Explanation:')[0]
+        other_text = text[len(sql):]
+        tokens = list(pygments.lex(sql, lexer=SqlLexer()))
+        print_formatted_text(PygmentsTokens(tokens))
+        print(other_text)
+    except:
+        print(text)
+
 
 @click.command()
-def main():
+@click.option('--syntax/--no-syntax', help='Activate syntax highlighting', default=True)
+def main(syntax):
     """ get user input and run prompt
     """
     bedrock = boto3.client('bedrock-runtime')
@@ -62,10 +87,12 @@ def main():
     answer = None
     while True:
         last_answer = answer
+        print()
+        print_formatted_text(HTML('<p><b>Enter CUR1 SQL query or GitHub URL</b> <br/>(r=retry, q=quit): </p>  <br/>'))
         answer = prompt(
-            message="Enter CUR1 SQL query or GitHub URL (r=retry, q=quit)>\n",
+            message=' >',
             multiline=True,
-            lexer=PygmentsLexer(SqlLexer),
+            lexer=PygmentsLexer(SqlLexer) if syntax else None,
             rprompt=lambda: 'Press Escape + Enter',
         )
 
@@ -79,7 +106,11 @@ def main():
         else:
             query = answer
 
-        print('Processing')
+        print('\n\n\n')
+        print('Processing..')
+        print('\n\n')
+        print_formatted_text(HTML('<b>Bedrock assistant</b>:'))
+        print('\n\n')
         response = bedrock.invoke_model_with_response_stream(
             modelId='anthropic.claude-3-sonnet-20240229-v1:0',
             accept='application/json',
@@ -101,14 +132,27 @@ def main():
             }),
         )
 
+        full_text = ''
         for event in response.get('body'):
             chunk = json.loads(event['chunk']['bytes'].decode())
             if chunk['type'] == 'content_block_delta':
                 text = chunk['delta']['text']
+                full_text += text
                 sys.stdout.write(text)
                 sys.stdout.flush()
-        print()
 
+        if syntax:
+            # replace simple printed lines with syntax syntax
+            lines_up = len(full_text.splitlines()) + 2
+            sys.stdout.write('\033[F' * lines_up)
+            sys.stdout.flush()
+            width = get_terminal_width()
+            # Clear the lines
+            for _ in range(lines_up + 1):
+                sys.stdout.write('\r' + ' ' * width + '\n')
+            sys.stdout.write('\033[F' * lines_up)  # Move cursor up N lines
+            sys.stdout.flush()
+            _print(full_text)
 
 if __name__ == '__main__':
     main()

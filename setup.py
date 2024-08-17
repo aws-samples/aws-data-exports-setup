@@ -7,6 +7,7 @@ setup(
     install_requires=[
         'boto3',
         'prompt_toolkit',
+        'pygments',
         'requests',
         "click>=8.0.0",
     ],

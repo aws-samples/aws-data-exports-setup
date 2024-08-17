@@ -17,7 +17,7 @@ This repository provides ready to use command line tool that takes as interactiv
 1. Open CloudShell in `us-east-1` region.
 2. Run following command:
 ```
-  pip3 install git+https://github.com/aws-samples/aws-data-exports-setup
+  pip3 install -U git+https://github.com/aws-samples/aws-data-exports-setup
 ```
 ### Run
 Run the interactive prompt, and insert your CUR1 queries

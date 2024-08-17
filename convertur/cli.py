@@ -4,12 +4,13 @@ This script uses bedrock to convert SQL queries from CUR1 to CUR2.
 Run it with python and enter the SQL query in the interactive prompt.
 
 '''
+import os
 import sys
 import json
 
 import boto3
 import click
-from InquirerPy import inquirer
+from prompt_toolkit import PromptSession
 
 from convertur.cur1to2 import mapping as cur1to2_mapping
 from convertur import utils
@@ -41,6 +42,13 @@ Assistant:
 """
 
 
+def prompt(**kwargs):
+    session = PromptSession(**kwargs)
+    if os.environ.get('AWS_EXECUTION_ENV') == 'CloudShell':
+       session.app.paste_mode = lambda: True # avoid auto-indent in CloudShell
+    return session.prompt()
+
+
 @click.command()
 def main():
     """ get user input and run prompt
@@ -50,10 +58,10 @@ def main():
     answer = None
     while True:
         last_answer = answer
-        answer = inquirer.text(
+        answer = prompt(
             message="Enter CUR1 SQL query or GitHub URL (r=retry, q=quit):",
             multiline=True,
-        ).execute()
+        )
 
         if answer is None or answer.strip() == 'q' or answer.strip() == 'quit':
             break

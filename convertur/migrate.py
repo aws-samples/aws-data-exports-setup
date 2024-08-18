@@ -236,9 +236,8 @@ def create_cur2(sql_string, bucket, report_name):
         else:
             print('CUR 2.0 updated')
     else:
-
         response = client.create_export(Export=export)
-        if response['HTTPStatusCode'] not in [200, 201]:
+        if response['ResponseMetadata']['HTTPStatusCode'] not in [200, 201]:
             print('Something went wrong')
             print(response)
         else:

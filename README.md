@@ -4,10 +4,10 @@ We recommend you migrating to CUR 2.O as it is more performant and future proof 
 
 For creation of CUR 2.0 export from scratch please use a [CloudFormation Stack published on Cloud Intelligence Dashboard](https://catalog.workshops.aws/awscid/en-US/data-exports) workshop. This solution can create the CUR2.0, transfer of data to a dedicated FinOps account and create needed Athena table for your analysis.
 
-This repository provides a set of tools that helps you simplify migration to CUR 2.0 if you have existing integration with 3rd party tools or if you have your set of queries that you want to use with CUR 2.0 .
+This repository provides an additional set of tools to simplify your migration to CUR 2.0. 
 
-* Query Conversion from Legacy CUR to CUR 2.0
-* Legacy CUR Migration
+* `query-converter` - Gen AI assistant for conversion of SQL queries to CUR 2.0 format. You will need a standard CUR 2.0 export [with athena integration](https://catalog.workshops.aws/awscid/en-US/data-exports) to run resulting queries.
+* `migrate-cur1` - A script for creation of CUR 2.O export, compatible with Legacy CUR format. Use it if you have existing integration with 3rd party tool and it was not updated to CUR 2.0 yet.
 
 
 ## Convert CUR1 query to CUR2.0 with Amazon Bedrock

@@ -12,7 +12,7 @@ This repository provides a set of tools that helps you simplify migration to CUR
 
 ## Convert CUR1 query to CUR2.0 with Amazon Bedrock
 
-This repository provides ready to use command line tool to transform your Legacy CUR queries to CUR2.0 format using Amazon Bedrock.
+This repository provides a ready to use command line tool `query-converter`. You can use it to transform your Legacy CUR queries to CUR2.0 format using Amazon Bedrock. This tool uses 'claude-3-sonnet' model extended with additional awareness about the specifics of CUR1 to CUR2.0 transformation.
 
 ![Demo](images/query-converter.gif)
 

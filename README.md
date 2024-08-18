@@ -45,11 +45,13 @@ You can try to rerun the same query coveter explaining additionally if there was
 
 This tool detects currently deployed [legacy CUR](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/cur.html), reads the file to define a format, produces a query that is equivalent to your legacy CUR data export and creates the [new CUR 2.0](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/bcm-data-exports.html) to the same bucket.
 
-1. Read Parquet File from legacy CUR bucket
-2. Analyze the schema of parquet file
+1. Select existing Legacy CUR (Only Athena and Parquet format are supported)
+2. Get the latest Parquet file and analyze the schema
 3. Create CUR 2.0 Query which will have the same schema as legacy.
-4. Updates Current CUR bucket permissions
-5. Creates the new CUR
+4. Update current CUR bucket policy
+5. Create the new CUR 2.0
+
+![Demo](images/migrate-cur.gif)
 
 ### Installation
 1. Open CloudShell in `us-east-1` region.

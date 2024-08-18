@@ -2,7 +2,7 @@
 
 We recommend you migrating to CUR 2.O as it is more performant and future proof way of getting the most detailed information about your AWS cost and usage.
 
-For creation of CUR 2.0 export from scratch please use a [CloudFormation Stack published on Cloud Intelligence Dashboard](https://catalog.workshops.aws/awscid/en-US/data-exports) workshop. This solution can create the CUR2.0, transfer of data to a dedicated FinOps account and create needed Athena table for your analysis. 
+For creation of CUR 2.0 export from scratch please use a [CloudFormation Stack published on Cloud Intelligence Dashboard](https://catalog.workshops.aws/awscid/en-US/data-exports) workshop. This solution can create the CUR2.0, transfer of data to a dedicated FinOps account and create needed Athena table for your analysis.
 
 This repository provides a set of tools that helps you simplify migration to CUR 2.0 if you have existing integration with 3rd party tools or if you have your set of queries that you want to use with CUR 2.0 .
 
@@ -13,7 +13,12 @@ This repository provides a set of tools that helps you simplify migration to CUR
 ## Convert CUR1 query to CUR2.0 with Amazon Bedrock
 
 This repository provides ready to use command line tool to transform your Legacy CUR queries to CUR2.0 format using Amazon Bedrock.
-Please make sure you have the model `anthropic.claude-3-sonnet-20240229-v1:0` activated in Amazon Bedrock console.
+
+![Demo](images/query-converter.gif)
+
+### Prerequisites
+
+Please make sure you have the model `anthropic.claude-3-sonnet-20240229-v1:0` activated in [Amazon Bedrock console](https://console.aws.amazon.com/bedrock).
 
 ### Installation
 
@@ -25,7 +30,7 @@ pip3 install -U git+https://github.com/aws-samples/aws-data-exports-setup
 ### Usage
 Run the interactive prompt, and insert your CUR1 queries
 ```
-query-convertor
+query-converter
 ```
 
 The tool also can read GitHub public urls.

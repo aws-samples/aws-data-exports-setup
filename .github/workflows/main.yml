@@ -30,7 +30,7 @@ jobs:
           pip install bandit
       - name: bandit check
         run: |
-          bandit -r ConvertUR.py  --confidence-level high
+          bandit -r convertur/query_converter.py  --confidence-level high
       - name: bandit check
         run: |
-          bandit -r query_converter.py  --confidence-level high 
+          bandit -r convertur/migrate.py  --confidence-level high 

@@ -90,7 +90,7 @@ def main(syntax):
     while True:
         last_answer = answer
         print()
-        print_formatted_text(HTML('<p><b>Enter CUR1 SQL query or GitHub URL</b> <br/>(r=retry, q=quit): </p>  <br/>'))
+        print_formatted_text(HTML('<p><b>Enter CUR1 SQL query or GitHub URL then Press Escape + Enter</b> <br/>(r=retry, q=quit): </p>  <br/>'))
         answer = prompt(
             message=' >',
             multiline=True,
@@ -139,7 +139,7 @@ def main(syntax):
             )
         except Exception as exc:
             if "You don't have access to the model with the specified model ID." in str(exc):
-                print(f"You don't have access to the model. Please open https://console.aws.amazon.com/bedrock and activate access to model {MODEL_ID}")
+                print(f"You don't have access to the model. Please open https://console.aws.amazon.com/bedrock and Request activate access to model {MODEL_ID}. This may take 5mins to be ready to use")
                 exit(1)
             raise
 

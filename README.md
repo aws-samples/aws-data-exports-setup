@@ -1,6 +1,6 @@
 # Tools for migration to CUR 2.0
 
-We recommend you migrating to CUR 2.O as it is more performant and future proof way of getting the most detailed information about your AWS cost and usage.
+We recommend you migrating to CUR 2.0 as it is more performant and future proof way of getting the most detailed information about your AWS cost and usage.
 
 For creation of CUR 2.0 export from scratch please use a [CloudFormation Stack published on Cloud Intelligence Dashboard](https://catalog.workshops.aws/awscid/en-US/data-exports) workshop. This solution can create the CUR2.0, transfer of data to a dedicated FinOps account and create needed Athena table for your analysis.
 

@@ -8,6 +8,7 @@ This repository provides an additional set of tools to simplify your migration t
 
 * `query-converter` - Gen AI assistant for conversion of SQL queries to CUR 2.0 format. You will need a standard CUR 2.0 export [with athena integration](https://catalog.workshops.aws/awscid/en-US/data-exports) to run resulting queries.
 * `migrate-cur1` - A script for creation of CUR 2.O export, compatible with Legacy CUR format. Use it if you have existing integration with 3rd party tool and it was not updated to CUR 2.0 yet.
+* `hard_coded_query_converter.py` - Coverter for CUR legacy Queries to CUR 2.0 not using AI. Mainly for customer who cannot use Bedrock becasue of restrictions. 
 
 
 ## Convert CUR1 query to CUR2.0 with Amazon Bedrock
